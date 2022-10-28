@@ -27,7 +27,7 @@ public class FacultyController {
 
     @GetMapping("/edit")
     public  ResponseEntity<Faculty> editFaculty(@RequestParam Faculty faculty){
-        Faculty foundFaculty = FacultyService.editFaculty(faculty);
+        Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.status(404).build();
         }
@@ -35,13 +35,14 @@ public class FacultyController {
     }
 
     @GetMapping("/delete")
-    public Faculty deleteFaculty(@PathVariable Long id) {
-        return facultyService.deleteFaculty(id);
+    public ResponseEntity deleteFaculty(@PathVariable Long id) {
+         facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/filter")
     public ResponseEntity<Faculty> filterAgeFaculty(@RequestParam int age){
-        Faculty foundFaculty = FacultyService.filterAgeFaculty(age);
+        Faculty foundFaculty = facultyService.filterAgeFaculty(age);
         if (foundFaculty == null){
             return ResponseEntity.status(404).build();
         }
