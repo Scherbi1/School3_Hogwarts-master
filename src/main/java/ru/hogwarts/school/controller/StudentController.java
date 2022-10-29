@@ -28,9 +28,7 @@ public class StudentController {
     @GetMapping("/edit")
     public  ResponseEntity<Student> editStudent(@RequestParam Student student){
         Student foundStudent = studentService.editStudent(student);
-        if (foundStudent == null) {
-            return ResponseEntity.status(404).build();
-        }
+
         return ResponseEntity.ok(foundStudent);
     }
 
@@ -42,9 +40,6 @@ public class StudentController {
     @GetMapping("/filter")
     public ResponseEntity<Student> filterAgeStudent(@RequestParam int age){
         Student foundStudent = studentService.filterAgeStudent(age);
-        if (foundStudent == null){
-            return ResponseEntity.status(404).build();
-        }
         return ResponseEntity.ok(foundStudent);
     }
 }

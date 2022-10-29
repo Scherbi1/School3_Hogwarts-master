@@ -1,6 +1,7 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.Exception.FacultyNotFoundException;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
@@ -32,6 +33,6 @@ public class FacultyService {
     }
 
     public Faculty filterAgeFaculty(long age){
-         return facultyRepository.findById(age).get();
+         return facultyRepository.findById(age).orElseThrow(()-> new FacultyNotFoundException());
     }
 }
