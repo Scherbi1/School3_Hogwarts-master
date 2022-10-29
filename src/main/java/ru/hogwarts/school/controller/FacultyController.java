@@ -20,13 +20,13 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.findFaculty());
     }
 
-    @GetMapping("/create")
-    public Faculty createFaculty(@RequestParam Faculty faculty) {
+    @PostMapping("/create")
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
         return facultyService.createFaculty(faculty);
     }
 
-    @GetMapping("/edit")
-    public  ResponseEntity<Faculty> editFaculty(@RequestParam Faculty faculty){
+    @PutMapping("/edit")
+    public  ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty){
         Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.status(404).build();
@@ -34,7 +34,7 @@ public class FacultyController {
         return ResponseEntity.ok(foundFaculty);
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity deleteFaculty(@PathVariable Long id) {
          facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();

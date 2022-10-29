@@ -20,19 +20,19 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findStudent());
     }
 
-    @GetMapping("/create")
-    public Student createStudent(@RequestParam Student student) {
+    @PostMapping("/create")
+    public Student createStudent(@RequestBody Student student) {
         return studentService.createStudent(student);
     }
 
-    @GetMapping("/edit")
-    public  ResponseEntity<Student> editStudent(@RequestParam Student student){
+    @PutMapping("/edit")
+    public  ResponseEntity<Student> editStudent(@RequestBody Student student){
         Student foundStudent = studentService.editStudent(student);
 
         return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
