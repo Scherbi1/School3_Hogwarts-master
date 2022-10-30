@@ -6,7 +6,6 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @Service
 public class FacultyService {
@@ -32,7 +31,7 @@ public class FacultyService {
           facultyRepository.deleteById(id);
     }
 
-    public Faculty filterAgeFaculty(long age){
+    public Faculty getFacultyById(long age){
          return facultyRepository.findById(age).orElseThrow(()-> new FacultyNotFoundException());
     }
 }

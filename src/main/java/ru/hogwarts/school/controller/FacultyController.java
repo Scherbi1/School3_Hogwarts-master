@@ -40,9 +40,9 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<Faculty> filterAgeFaculty(@RequestParam int age){
-        Faculty foundFaculty = facultyService.filterAgeFaculty(age);
+    @GetMapping("{id}")
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id){
+        Faculty foundFaculty = facultyService.getFacultyById(id);
         if (foundFaculty == null){
             return ResponseEntity.status(404).build();
         }
