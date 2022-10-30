@@ -31,7 +31,7 @@ public class FacultyService {
           facultyRepository.deleteById(id);
     }
 
-    public Faculty getFacultyById(long age){
-         return facultyRepository.findById(age).orElseThrow(()-> new FacultyNotFoundException());
+    public Faculty getFacultyById(long id){
+         return facultyRepository.findById(id).orElseThrow(()-> new FacultyNotFoundException());
     }
 }

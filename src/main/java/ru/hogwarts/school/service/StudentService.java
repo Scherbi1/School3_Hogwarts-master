@@ -30,8 +30,8 @@ public class StudentService {
     public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
-    public Student getStudentById(long age){
-        return studentRepository.findById(age).orElseThrow(()-> new StudentNotFoundException());
+    public Student getStudentById(long id){
+        return studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException());
     }
 }
     
