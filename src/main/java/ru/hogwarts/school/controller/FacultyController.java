@@ -16,7 +16,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
     @GetMapping("/get")
-    public ResponseEntity<Collection<Faculty>> getAllStudent() {
+    public ResponseEntity<Collection<Faculty>> getAllFaculty() {
         return ResponseEntity.ok(facultyService.findFaculty());
     }
 
@@ -47,5 +47,9 @@ public class FacultyController {
             return ResponseEntity.status(404).build();
         }
         return ResponseEntity.ok(foundFaculty);
+    }
+    @GetMapping("/NameAndColor")
+    public ResponseEntity<Collection<Faculty>> findFacultyByNameAndColor(@RequestParam String title, @RequestParam String color) {
+        return ResponseEntity.ok(facultyService.findFacultyByNameIgnoreCaseAndColorIgnoreCase(title, color));
     }
 }

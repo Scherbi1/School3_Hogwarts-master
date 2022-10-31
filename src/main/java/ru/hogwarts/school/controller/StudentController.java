@@ -28,7 +28,6 @@ public class StudentController {
     @PutMapping("/edit")
     public  ResponseEntity<Student> editStudent(@RequestBody Student student){
         Student foundStudent = studentService.editStudent(student);
-
         return ResponseEntity.ok(foundStudent);
     }
 
@@ -41,5 +40,10 @@ public class StudentController {
     public ResponseEntity<Student> getStudent(@PathVariable Long id){
         Student foundStudent = studentService.getStudentById(id);
         return ResponseEntity.ok(foundStudent);
+    }
+
+    @GetMapping("/Between")
+    public ResponseEntity<Collection<Student>> FindAgeBetween(@RequestParam Integer min, @RequestParam Integer max) {
+        return ResponseEntity.ok(studentService.findByAgeBetween(min,max));
     }
 }

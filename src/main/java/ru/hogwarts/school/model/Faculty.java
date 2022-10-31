@@ -1,8 +1,7 @@
 package ru.hogwarts.school.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 @Entity
 public class Faculty {
@@ -10,8 +9,10 @@ public class Faculty {
     @GeneratedValue
     private long id;
 
-    private String name;
+    private String title;
     private String color;
+    @OneToMany(mappedBy = "position")
+    private Collection<Student> student;
 
 
 
@@ -23,12 +24,12 @@ public class Faculty {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
 
     public String getColor() {
@@ -44,19 +45,19 @@ public class Faculty {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Faculty faculty = (Faculty) o;
-        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
+        return id == faculty.id && Objects.equals(title, faculty.title) && Objects.equals(color, faculty.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color);
+        return Objects.hash(id, title, color);
     }
 
     @Override
     public String toString() {
         return "Faculty{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + title + '\'' +
                 ", color='" + color + '\'' +
                 '}';
     }
