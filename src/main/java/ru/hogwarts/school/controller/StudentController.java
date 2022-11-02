@@ -42,4 +42,9 @@ public class StudentController {
         Student foundStudent = studentService.getStudentById(id);
         return ResponseEntity.ok(foundStudent);
     }
+
+    @GetMapping("/Between")
+    public ResponseEntity<Collection<Student>> FindAgeBetween(@RequestParam Integer min, @RequestParam Integer max) {
+        return ResponseEntity.ok(studentService.findByAgeBetween(min,max));
+    }
 }

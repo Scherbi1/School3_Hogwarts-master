@@ -34,4 +34,8 @@ public class FacultyService {
     public Faculty getFacultyById(long id){
          return facultyRepository.findById(id).orElseThrow(()-> new FacultyNotFoundException());
     }
+
+    public Collection<Faculty> findFacultyByNameIgnoreCaseAndColorIgnoreCase(String title, String color) {
+        return facultyRepository.findFacultyByNameIgnoreCaseAndColorIgnoreCase(title, color);
+    }
 }

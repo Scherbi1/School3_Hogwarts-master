@@ -33,5 +33,8 @@ public class StudentService {
     public Student getStudentById(long id){
         return studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException());
     }
+    public Collection<Student> findByAgeBetween(Integer min, Integer max) {
+        return studentRepository.findByAgeBetween(min, max);
+    }
 }
     

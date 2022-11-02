@@ -48,4 +48,8 @@ public class FacultyController {
         }
         return ResponseEntity.ok(foundFaculty);
     }
+    @GetMapping("/NameAndColor")
+    public ResponseEntity<Collection<Faculty>> findFacultyByNameAndColor(@RequestParam String title, @RequestParam String color) {
+        return ResponseEntity.ok(facultyService.findFacultyByNameIgnoreCaseAndColorIgnoreCase(title, color));
+    }
 }
