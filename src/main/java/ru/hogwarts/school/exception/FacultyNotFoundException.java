@@ -1,4 +1,4 @@
-package ru.hogwarts.school.Exception;
+package ru.hogwarts.school.exception;
 
 public class FacultyNotFoundException extends RuntimeException{
 }

@@ -30,7 +30,7 @@ private final AvatarRepository avatarRepository;
         this.avatarRepository = avatarRepository;
     }
 
-    public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentService.getStudentById(studentId);
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
@@ -55,8 +55,8 @@ private final AvatarRepository avatarRepository;
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public Avatar findAvatar (Long StudentId) {
-        return avatarRepository.findAvatarId(StudentId).orElseThrow();
+    public Avatar findAvatar (Long studentId) {
+        return avatarRepository.findByStudentId(studentId).orElseThrow(RuntimeException::new);
     }
 }
 
