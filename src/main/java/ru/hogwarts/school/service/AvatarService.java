@@ -56,7 +56,7 @@ private final AvatarRepository avatarRepository;
     }
 
     public Avatar findAvatar (Long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow(RuntimeException::new);
+        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 }
 

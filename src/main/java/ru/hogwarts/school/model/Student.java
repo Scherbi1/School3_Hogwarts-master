@@ -56,7 +56,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Студент: " +
+        return "Студент " +
                 "id - " + id +
                 ". Имя - " + name + '\'' +
                 ". Возраст - " + age;

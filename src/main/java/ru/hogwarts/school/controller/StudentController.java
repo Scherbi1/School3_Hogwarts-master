@@ -8,7 +8,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/Student")
+@RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
 
@@ -43,7 +43,7 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping("/Between")
+    @GetMapping("/between")
     public ResponseEntity<Collection<Student>> FindAgeBetween(@RequestParam Integer min, @RequestParam Integer max) {
         return ResponseEntity.ok(studentService.findByAgeBetween(min,max));
     }

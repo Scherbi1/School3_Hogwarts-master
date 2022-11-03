@@ -89,7 +89,7 @@ public class Avatar {
 
 
 
-  /*  @Override
+   @Override
     public String toString() {
         return "Avatar{" +
                 "id=" + id +
@@ -99,5 +99,5 @@ public class Avatar {
                 ", data=" + Arrays.toString(data) +
                 ", student=" + student +
                 '}';
-    }*/
+    }
 }

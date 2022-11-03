@@ -8,7 +8,7 @@ import ru.hogwarts.school.service.FacultyService;
 import java.util.Collection;
 
 @RestController
-@RequestMapping("/Faculty")
+@RequestMapping("/faculty")
 public class FacultyController {
     private FacultyService facultyService;
 
@@ -48,7 +48,7 @@ public class FacultyController {
         }
         return ResponseEntity.ok(foundFaculty);
     }
-    @GetMapping("/NameAndColor")
+    @GetMapping("/name-and-color")
     public ResponseEntity<Collection<Faculty>> findFacultyByNameAndColor(@RequestParam String title, @RequestParam String color) {
         return ResponseEntity.ok(facultyService.findFacultyByNameIgnoreCaseAndColorIgnoreCase(title, color));
     }
