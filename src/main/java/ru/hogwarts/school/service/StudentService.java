@@ -18,9 +18,7 @@ public class StudentService {
 
     public Student createStudent(Student student) {
         return studentRepository.save(student);
-
     }
-
     public Collection<Student> findStudent() {
         return studentRepository.findAll();
     }
