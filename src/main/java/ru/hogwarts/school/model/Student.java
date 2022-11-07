@@ -61,4 +61,7 @@ public class Student {
                 ". Имя - " + name + '\'' +
                 ". Возраст - " + age;
     }
+
+    public void setFaculty(Faculty faculty) {
+    }
 }

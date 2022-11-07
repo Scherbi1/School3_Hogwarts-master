@@ -51,8 +51,6 @@ public class FacultyControllerTest {
                     assertThat(faculty1).isNotNull();
                     assertThat(faculty1).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
                     assertThat(faculty.getId()).isEqualTo(faculty.getId());
-
-
                 });
 
 
