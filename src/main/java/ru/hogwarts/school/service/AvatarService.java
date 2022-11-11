@@ -58,5 +58,8 @@ private final AvatarRepository avatarRepository;
     public Avatar findAvatar (Long studentId) {
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
+    public Avatar deleteAvatar (Long studentId) {
+        return avatarRepository.deleteAvatarById(studentId).orElse(new Avatar());
+    }
 }
 

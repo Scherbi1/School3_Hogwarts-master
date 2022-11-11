@@ -1,6 +1,7 @@
 package ru.hogwarts.school.controller;
 
 import com.github.javafaker.Faker;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
+
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.in;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,9 +51,9 @@ public class StudentControllerTest {
     public void createTest() {
         addStudent(generateStudent(addFaculty(generateFaculty())));
     }
-    @Test
+
     public Student addStudent(Student student) {
-        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/student/", student, Student.class);
+        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/student/create", student, Student.class);
         assertThat(studentResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(studentResponseEntity.getBody()).isNotNull();
         assertThat(studentResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
@@ -58,9 +61,9 @@ public class StudentControllerTest {
         return studentResponseEntity.getBody();
     }
 
-    @Test
+
     public Faculty addFaculty(Faculty faculty) {
-        ResponseEntity<Faculty> facultyResponseEntity= testRestTemplate.postForEntity("http://localhost:" + port + "/faculty/", faculty, Faculty.class);
+        ResponseEntity<Faculty> facultyResponseEntity= testRestTemplate.postForEntity("http://localhost:" + port + "/faculty/create", faculty, Faculty.class);
         assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(facultyResponseEntity.getBody()).isNotNull();
         assertThat(facultyResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
@@ -74,14 +77,14 @@ public class StudentControllerTest {
         Faculty faculty2 = addFaculty(generateFaculty());
         Student student = addStudent(generateStudent(faculty1));
 
-        ResponseEntity<Student> getForEntityResponse = testRestTemplate.postForEntity("http://localhost:" + port + "/student/", student.getId(), Student.class);
+        ResponseEntity<Student> getForEntityResponse = testRestTemplate.postForEntity("http://localhost:" + port + "/student/edit", student.getId(), Student.class);
         assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getForEntityResponse.getBody()).isNotNull();
         assertThat(getForEntityResponse.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
         assertThat(getForEntityResponse.getBody().getId()).isNotNull();
 
         student.setFaculty(faculty2);
-        ResponseEntity<Student> recordResponseEntity =  testRestTemplate.postForEntity("http://localhost:" + port + "/student/", student.getId(), Student.class);
+        ResponseEntity<Student> recordResponseEntity =  testRestTemplate.postForEntity("http://localhost:" + port + "/student/edit", student.getId(), Student.class);
         assertThat(recordResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(recordResponseEntity.getBody()).isNotNull();
         assertThat(recordResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
@@ -104,7 +107,7 @@ public class StudentControllerTest {
                 .filter(student -> student.getAge()>=minAge && student.getAge()<=maxAge)
                 .toList();
         ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange(
-                "http://localhost:" + port + "/students?minAge={minAge}&maxAge={maxAge}",
+                "http://localhost:" + port + "/between",
                 HttpMethod.GET,
                 HttpEntity.EMPTY,
                 new ParameterizedTypeReference<>() {
@@ -113,7 +116,7 @@ public class StudentControllerTest {
         assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(getForEntityResponse.getBody())
                 .hasSize(expectedStudents.size())
-                .usingRecursiveFieldByFieldElementComporator()
+                .usingRecursiveFieldByFieldElementComparator()
                 .containsExactlyInAnyOrderElementsOf(expectedStudents);
     }
     private Student generateStudent(Faculty faculty) {

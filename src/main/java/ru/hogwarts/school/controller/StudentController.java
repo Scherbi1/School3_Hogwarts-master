@@ -3,6 +3,7 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
@@ -11,9 +12,10 @@ import java.util.Collection;
 @RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
-
-    public StudentController(StudentService studentService) {
+    private final AvatarService avatarService;
+    public StudentController(StudentService studentService, AvatarService avatarService) {
         this.studentService = studentService;
+        this.avatarService = avatarService;
     }
     @GetMapping("/get")
     public ResponseEntity<Collection<Student>> getAllStudent() {
@@ -34,6 +36,7 @@ public class StudentController {
 
     @DeleteMapping("/delete")
     public ResponseEntity deleteStudent(@PathVariable Long id) {
+        avatarService.deleteAvatar(id);
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
