@@ -1,17 +1,23 @@
 package ru.hogwarts.school.model;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name="students")
 public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String name;
     private int age;
 
-    public Student(long id, String name, int age) {
-        this.id = id;
-        this.name = name;
-        this.age = age;
-    }
+    @ManyToOne
+    @JoinColumn(name="faculty_id")
+    private Faculty faculty;
+     @OneToOne
+     private Avatar avatar;
 
     public long getId() {
         return id;
@@ -36,6 +42,13 @@ public class Student {
     public void setAge(int age) {
         this.age = age;
     }
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -52,10 +65,14 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                '}';
+        return "Студент " +
+                "id - " + id +
+                ". Имя - " + name + '\'' +
+                ". Возраст - " + age;
     }
+
+    public void setFaculty(Faculty faculty) {
+    }
+
+
 }

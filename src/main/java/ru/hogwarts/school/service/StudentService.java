@@ -1,35 +1,48 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
+import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repositories.AvatarRepository;
+import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 @Service
 public class StudentService {
-    private static final HashMap<Long, Student> studentMap =new HashMap<>();
-    private long lastId = 1;
+
+    private final StudentRepository studentRepository;
+    private final AvatarRepository avatarRepository;
+
+
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+        this.studentRepository = studentRepository;
+
+        this.avatarRepository = avatarRepository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(lastId++);
-        studentMap.put(lastId, student);
-        return student;
+        return studentRepository.save(student);
     }
-
     public Collection<Student> findStudent() {
-        return studentMap.values();
+        return studentRepository.findAll();
     }
-    public static Student editStudent(Student student) {
-        studentMap.put(student.getId(), student);
-        return student;
+    public Student editStudent(Student student) {
+        return studentRepository.save(student);
     }
-    public Student deleteStudent(long id) {
-        return studentMap.remove(id);
+    public void deleteStudent(long id) {
+            long avatarId;
+            avatarId= studentRepository.findByAvatarId(id);
+            avatarRepository.deleteById(avatarId);
+            studentRepository.deleteById(id);
+
     }
 
-    public static Student filterAgeStudent(int age){
-
-        return studentMap.get(age);
+    public Student getStudentById(long id){
+        return studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException());
+    }
+    public Collection<Student> findByAgeBetween(Integer min, Integer max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 }
+    
