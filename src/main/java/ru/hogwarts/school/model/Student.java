@@ -3,6 +3,7 @@ package ru.hogwarts.school.model;
 import javax.persistence.*;
 import java.util.Objects;
 @Entity
+@Table(name="students")
 public class Student {
 
     @Id
@@ -15,7 +16,8 @@ public class Student {
     @ManyToOne
     @JoinColumn(name="faculty_id")
     private Faculty faculty;
-
+     @OneToOne
+     private Avatar avatar;
 
     public long getId() {
         return id;
@@ -39,6 +41,13 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
+    }
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     @Override
@@ -64,4 +73,6 @@ public class Student {
 
     public void setFaculty(Faculty faculty) {
     }
+
+
 }

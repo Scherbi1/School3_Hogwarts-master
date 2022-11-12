@@ -35,8 +35,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity deleteStudent(@PathVariable Long id) {
-        avatarService.deleteAvatar(id);
+    public ResponseEntity deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }

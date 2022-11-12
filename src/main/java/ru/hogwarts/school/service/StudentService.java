@@ -12,11 +12,13 @@ import java.util.Collection;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final AvatarRepository avatarRepository;
 
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
 
+        this.avatarRepository = avatarRepository;
     }
 
     public Student createStudent(Student student) {
@@ -29,8 +31,13 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public void deleteStudent(long id) {
-        studentRepository.deleteById(id);
+            long avatarId;
+            avatarId= studentRepository.findByAvatarId(id);
+            avatarRepository.deleteById(avatarId);
+            studentRepository.deleteById(id);
+
     }
+
     public Student getStudentById(long id){
         return studentRepository.findById(id).orElseThrow(()-> new StudentNotFoundException());
     }
