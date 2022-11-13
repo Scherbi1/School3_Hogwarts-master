@@ -1,6 +1,8 @@
 package ru.hogwarts.school.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
@@ -12,6 +14,7 @@ import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -59,5 +62,10 @@ private final AvatarRepository avatarRepository;
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
+    public ResponseEntity<List<Avatar>> findAvatarAll(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
+        List<Avatar> avatar =avatarRepository.findAll((pageRequest)).getContent();
+          return ResponseEntity.ok(avatar);
+    }
 }
 
