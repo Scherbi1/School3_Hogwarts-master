@@ -56,7 +56,6 @@ public class FacultyControllerTest {
         Faculty faculty1 = new Faculty();
         faculty1.setName("Грффиндор");
         faculty1.setColor("Красный");
-
         mockMvc.perform(MockMvcRequestBuilders.post("/faculty")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(faculty)))

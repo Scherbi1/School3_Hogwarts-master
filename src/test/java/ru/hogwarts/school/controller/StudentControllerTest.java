@@ -86,7 +86,6 @@ public class StudentControllerTest {
         assertThat(response.getBody().getName(), is("Nick"));
 
     }
-
     @Test
     public void givenPersons_whenGetPersons_thenStatus200() {
         createTestPerson(122L,"Joe", 22);
