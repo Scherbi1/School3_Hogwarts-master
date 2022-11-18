@@ -19,6 +19,8 @@ public class Student {
      @OneToOne
      private Avatar avatar;
 
+
+
     public long getId() {
         return id;
     }
@@ -63,13 +65,7 @@ public class Student {
         return Objects.hash(id, name, age);
     }
 
-    @Override
-    public String toString() {
-        return "Студент " +
-                "id - " + id +
-                ". Имя - " + name + '\'' +
-                ". Возраст - " + age;
-    }
+
 
     public void setFaculty(Faculty faculty) {
     }

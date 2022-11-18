@@ -1,137 +1,107 @@
 package ru.hogwarts.school.controller;
 
-import com.github.javafaker.Faker;
-import org.assertj.core.api.Assertions;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import ru.hogwarts.school.model.Faculty;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 
+import static org.hamcrest.CoreMatchers.*;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.List;
-import java.util.stream.Stream;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.in;
-
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentControllerTest {
-    @LocalServerPort
-    private int port;
-
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private TestRestTemplate restTemplate;
 
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private FacultyRepository facultyRepository;
-
-    private final Faker faker = new Faker();
     @AfterEach
-    public void afterEach() {
+    public void resetDb() {
         studentRepository.deleteAll();
-        facultyRepository.deleteAll();
     }
 
     @Test
-    public void createTest() {
-        addStudent(generateStudent(addFaculty(generateFaculty())));
-    }
+    public void whenCreatePerson_thenStatus200() {
 
-    public Student addStudent(Student student) {
-        ResponseEntity<Student> studentResponseEntity = testRestTemplate.postForEntity("http://localhost:" + port + "/student/create", student, Student.class);
-        assertThat(studentResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(studentResponseEntity.getBody()).isNotNull();
-        assertThat(studentResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
-        assertThat(studentResponseEntity.getBody().getId()).isNotNull();
-        return studentResponseEntity.getBody();
-    }
-
-
-    public Faculty addFaculty(Faculty faculty) {
-        ResponseEntity<Faculty> facultyResponseEntity= testRestTemplate.postForEntity("http://localhost:" + port + "/faculty/create", faculty, Faculty.class);
-        assertThat(facultyResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(facultyResponseEntity.getBody()).isNotNull();
-        assertThat(facultyResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
-        assertThat(facultyResponseEntity.getBody().getId()).isNotNull();
-        return facultyResponseEntity.getBody();
-    }
-
-    @Test
-    public void putTest() {
-        Faculty faculty1 = addFaculty(generateFaculty());
-        Faculty faculty2 = addFaculty(generateFaculty());
-        Student student = addStudent(generateStudent(faculty1));
-
-        ResponseEntity<Student> getForEntityResponse = testRestTemplate.postForEntity("http://localhost:" + port + "/student/edit", student.getId(), Student.class);
-        assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(getForEntityResponse.getBody()).isNotNull();
-        assertThat(getForEntityResponse.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
-        assertThat(getForEntityResponse.getBody().getId()).isNotNull();
-
-        student.setFaculty(faculty2);
-        ResponseEntity<Student> recordResponseEntity =  testRestTemplate.postForEntity("http://localhost:" + port + "/student/edit", student.getId(), Student.class);
-        assertThat(recordResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(recordResponseEntity.getBody()).isNotNull();
-        assertThat(recordResponseEntity.getBody()).usingRecursiveComparison().ignoringFields("id").isEqualTo(student);
-        assertThat(recordResponseEntity.getBody().getId()).isNotNull();
-    }
-
-    @Test
-    public void findByAgeBetweenTest() {
-        List<Faculty> faculty = Stream.generate(this::generateFaculty)
-                .limit(5)
-                .map(this::addFaculty)
-                .toList();
-        List<Student> students = Stream.generate(() ->generateStudent(faculty.get(faker.random().nextInt(faculty.size()))))
-                .limit(50)
-                .map(this::addStudent)
-                .toList();
-        int minAge=14;
-        int maxAge=21;
-        List<Student> expectedStudents = students.stream()
-                .filter(student -> student.getAge()>=minAge && student.getAge()<=maxAge)
-                .toList();
-        ResponseEntity<List<Student>> getForEntityResponse = testRestTemplate.exchange(
-                "http://localhost:" + port + "/between",
-                HttpMethod.GET,
-                HttpEntity.EMPTY,
-                new ParameterizedTypeReference<>() {
-                }, minAge,maxAge
-        );
-        assertThat(getForEntityResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(getForEntityResponse.getBody())
-                .hasSize(expectedStudents.size())
-                .usingRecursiveFieldByFieldElementComparator()
-                .containsExactlyInAnyOrderElementsOf(expectedStudents);
-    }
-    private Student generateStudent(Faculty faculty) {
         Student student = new Student();
-        student.setName(faker.harryPotter().character());
-        student.setAge(faker.random().nextInt(10,30));
-        if (faculty != null) {
-            student.setFaculty(faculty);
-        }
-        return student;
+        long id = createTestPerson(121L,"Michail", 22).getId();
+        ResponseEntity<Student> response = restTemplate.postForEntity("/student/create", student, Student.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(response.getBody().getId(), notNullValue());
+        assertThat(response.getBody().getName(), is("Michail"));
     }
-    private Faculty generateFaculty() {
-        Faculty faculty = new Faculty();
-        faculty.setName(faker.harryPotter().house());
-        faculty.setColor(faker.color().name());
-        return faculty;
+
+    @Test
+    public void givenPerson_whenGetPerson_thenStatus200() {
+
+        long id = createTestPerson(122L,"Joe", 22).getId();
+
+        Student person = restTemplate.getForObject("/student/{id}", Student.class, id);
+        assertThat(person.getName(), is("Joe"));
     }
+
+    @Test
+    public void whenUpdatePerson_thenStatus200() {
+
+        long id = createTestPerson(123L,"Nick", 33).getId();
+        Student student1 = new Student();
+        HttpEntity<Student> entity = new HttpEntity<Student>(student1);
+
+        ResponseEntity<Student> response = restTemplate.exchange("/student/edit", HttpMethod.PUT, entity, Student.class,
+                id);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getId(), notNullValue());
+        assertThat(response.getBody().getName(), is("Michail"));
+    }
+
+    @Test
+    public void givenPerson_whenDeletePerson_thenStatus200() {
+
+        long id = createTestPerson(124L,"Nick",33).getId();
+        ResponseEntity<Student> response = restTemplate.exchange("/student/{id}", HttpMethod.DELETE, null, Student.class,
+                id);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getId(), is(id));
+        assertThat(response.getBody().getName(), is("Nick"));
+
+    }
+
+    @Test
+    public void givenPersons_whenGetPersons_thenStatus200() {
+        createTestPerson(122L,"Joe", 22);
+        createTestPerson(125L,"Jane",27);
+        ResponseEntity<List<Student>> response = restTemplate.exchange("/student/get", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<Student>>() {
+                });
+        List<Student> persons = response.getBody();
+        assertThat(persons, hasSize(2));
+        assertThat(persons.get(1).getName(), is("Jane"));
+    }
+
+    private Student createTestPerson(Long id,String name, int age) {
+        Student emp = new Student();
+        return studentRepository.save(emp);
+    }
+
 }
