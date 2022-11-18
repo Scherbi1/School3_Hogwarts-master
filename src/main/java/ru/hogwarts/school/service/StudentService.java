@@ -3,7 +3,7 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.SqlRequestInterface.getStudentByAverageAge;
 import ru.hogwarts.school.SqlRequestInterface.getStudentByIdDeskFive;
-import ru.hogwarts.school.SqlRequestInterface.getStudentByName;
+
 import ru.hogwarts.school.exception.StudentNotFoundException;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
@@ -37,9 +37,9 @@ public class StudentService {
         return studentRepository.save(student);
     }
     public void deleteStudent(long id) {
-           long avatarId;
-        avatarId= studentRepository.findByAvatarId(id);
-            avatarRepository.deleteById(avatarId);
+          // long avatarId;
+       // avatarId= studentRepository.findByAvatarId(id);
+         //   avatarRepository.deleteById(avatarId);
             studentRepository.deleteById(id);
        /* student = studentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student is not found"));
@@ -54,7 +54,7 @@ public class StudentService {
         return studentRepository.findByAgeBetween(min, max);
     }
 
-    public List<getStudentByName> getStudentByNames() {
+    public List<Integer> getStudentByNames() {
         return studentRepository.getStudentByName();
     }
 

@@ -44,13 +44,7 @@ public class Student {
     public void setAge(int age) {
         this.age = age;
     }
-    public Avatar getAvatar() {
-        return avatar;
-    }
 
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -65,10 +59,12 @@ public class Student {
         return Objects.hash(id, name, age);
     }
 
-
-
-    public void setFaculty(Faculty faculty) {
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                '}';
     }
-
-
 }

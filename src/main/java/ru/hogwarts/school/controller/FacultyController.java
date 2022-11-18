@@ -16,7 +16,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
     @GetMapping("/get")
-    public ResponseEntity<Collection<Faculty>> getAllStudent() {
+    public ResponseEntity<Collection<Faculty>> getAllFaculty() {
         return ResponseEntity.ok(facultyService.findFaculty());
     }
 

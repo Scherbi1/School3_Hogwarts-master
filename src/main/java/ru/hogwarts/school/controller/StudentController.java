@@ -2,11 +2,15 @@ package ru.hogwarts.school.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogwarts.school.SqlRequestInterface.getStudentByAverageAge;
+import ru.hogwarts.school.SqlRequestInterface.getStudentByIdDeskFive;
+
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("/student")
@@ -34,8 +38,8 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
-    @DeleteMapping("/delete")
-    public ResponseEntity deleteStudent(@PathVariable long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity deleteStudent(@RequestParam long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
@@ -48,5 +52,17 @@ public class StudentController {
     @GetMapping("/between")
     public ResponseEntity<Collection<Student>> FindAgeBetween(@RequestParam Integer min, @RequestParam Integer max) {
         return ResponseEntity.ok(studentService.findByAgeBetween(min,max));
+    }
+    @GetMapping("/get-student-by-name")
+    public List<Integer> getStudentByNames() {
+        return studentService.getStudentByNames();
+    }
+    @GetMapping("/get-student-by-average-age")
+    public List<getStudentByAverageAge> getStudentByAverageAges() {
+        return studentService.getStudentByAverageAges();
+    }
+    @GetMapping("/get-student-by-id-desc-five")
+    public List<getStudentByIdDeskFive> getStudentByIdDeskFives() {
+        return studentService.getStudentByIdDeskFives();
     }
 }
