@@ -56,16 +56,16 @@ public class FacultyControllerTest {
         Faculty faculty1 = new Faculty();
         faculty1.setName("Грффиндор");
         faculty1.setColor("Красный");
-        mockMvc.perform(MockMvcRequestBuilders.post("/faculty")
+        mockMvc.perform(MockMvcRequestBuilders.post("/faculty/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(faculty)))
                 .andExpect(result ->{
                     MockHttpServletResponse mockHttpServletResponse = result.getResponse();
-                    //  Faculty faculty1 = objectMapper.readValue(mockHttpServletResponse.getContentAsString(StandardCharsets.UTF_8), Faculty.class);
+                     Faculty faculty2 = objectMapper.readValue(mockHttpServletResponse.getContentAsString(StandardCharsets.UTF_8), Faculty.class);
                     assertThat(mockHttpServletResponse.getStatus()).isEqualTo(HttpStatus.OK.value());
-                    assertThat(faculty1).isNotNull();
-                    assertThat(faculty1).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
-                    assertThat(faculty1.getId()).isEqualTo(faculty.getId());
+                    assertThat(faculty2).isNotNull();
+                    assertThat(faculty2).usingRecursiveComparison().ignoringFields("id").isEqualTo(faculty);
+                    assertThat(faculty2.getId()).isEqualTo(faculty.getId());
                 });
     }
 }

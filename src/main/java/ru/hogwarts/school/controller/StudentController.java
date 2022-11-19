@@ -34,12 +34,11 @@ public class StudentController {
     @PutMapping("/edit")
     public  ResponseEntity<Student> editStudent(@RequestBody Student student){
         Student foundStudent = studentService.editStudent(student);
-
         return ResponseEntity.ok(foundStudent);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteStudent(@RequestParam long id) {
+    public ResponseEntity deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
