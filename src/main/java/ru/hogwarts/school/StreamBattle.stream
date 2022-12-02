@@ -1,0 +1,18 @@
+System.out.println(time());
+System.out.println(timeParallel());
+
+private static long time(){
+long sum =Stream.iterate(1L,a->a+1)
+.limit(1_000_000L)
+.reduce(0L,Long::sum);
+return System.currentTimeMillis()-start;
+}
+
+private static long timeParallel(){
+long start =Stream.iterate(1L,a->a+1)
+.parallel();
+.limit(1_000_000L)
+.reduce(0L,Long::sum);
+return System.currentTimeMillis()-start;
+
+}

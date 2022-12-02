@@ -15,6 +15,7 @@ public class FacultyController {
     public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
+
     @GetMapping("/get")
     public ResponseEntity<Collection<Faculty>> getAllFaculty() {
         return ResponseEntity.ok(facultyService.findFaculty());
@@ -26,7 +27,7 @@ public class FacultyController {
     }
 
     @PutMapping("/edit")
-    public  ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty){
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
             return ResponseEntity.status(404).build();
@@ -36,20 +37,26 @@ public class FacultyController {
 
     @DeleteMapping("/delete")
     public ResponseEntity deleteFaculty(@PathVariable Long id) {
-         facultyService.deleteFaculty(id);
+        facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id){
+    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
         Faculty foundFaculty = facultyService.getFacultyById(id);
-        if (foundFaculty == null){
+        if (foundFaculty == null) {
             return ResponseEntity.status(404).build();
         }
         return ResponseEntity.ok(foundFaculty);
     }
+
     @GetMapping("/name-and-color")
     public ResponseEntity<Collection<Faculty>> findFacultyByNameAndColor(@RequestParam String title, @RequestParam String color) {
         return ResponseEntity.ok(facultyService.findFacultyByNameIgnoreCaseAndColorIgnoreCase(title, color));
+    }
+
+    @GetMapping("/find-Londest-Name-Faculty")
+    public String findLondestNameFaculty() {
+        return facultyService.findLondestNameFaculty();
     }
 }

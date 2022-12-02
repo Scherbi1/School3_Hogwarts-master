@@ -15,4 +15,5 @@ public class School3Application {
         SpringApplication.run(School3Application.class, args);
     }
 
+
 }
