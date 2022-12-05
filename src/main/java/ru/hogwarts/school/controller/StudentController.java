@@ -82,4 +82,12 @@ public class StudentController {
     public double findAvarageAgeAllStudent() {
         return studentService.findAvarageAgeAllStudent();
     }
+    @GetMapping("/printStudentSync")
+    public void printStudentSync() {
+        studentService.printStudentSync();
+    }
+    @GetMapping("/printStudentNoSync")
+    public void printStudentNoSync() {
+        studentService.printStudentNoSync();
+    }
 }
